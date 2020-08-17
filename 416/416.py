@@ -10,7 +10,7 @@ class Solution:
             return False
         target = sumval / 2
 
-        nums.sort(key=lambda x:-x)
+        nums.sort(reverse=True)
         if nums[0] > target:
             return False
 
