@@ -16,3 +16,18 @@ add the first one into the final result. For each interval, judge if it is overl
       intervals.sort(key=lambda x:x[1], reverse=True)
    ```
 
+## 1649 Binary IndexTree 
+   The situation is quite common -- all the prefix sum
+
+   Binary index tree is a tree structure. For example, with previous tree named a,
+   for bit:
+   ```
+   b[0] = 0 
+   b[1] = a[0]
+   b[2] = a[1]
+   b[3] = a[1] + a[0]
+ ``` 
+   As you can see, the bit is the sum of particular index number noted by 2-bit presented number
+   
+   
+reverse string: word[::-1] is okay
