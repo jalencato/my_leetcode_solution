@@ -31,3 +31,11 @@ add the first one into the final result. For each interval, judge if it is overl
    
    
 reverse string: word[::-1] is okay
+
+## 972 regression
+```
+import re
+re.match(pattern, string, flags=0) -> return index of matched string
+re.search(pattern, string, flags=0) -> return the first matched string
+
+```
