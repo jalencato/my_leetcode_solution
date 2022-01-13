@@ -1,15 +1,4 @@
-class keyset:
-    def __init__(self):
-        self.storelist = []
-
-
 class HashTable:
-    """
-    self.slots列表用来存储键, self.data列表用来存储值.
-    当我们通过键查找值时,键在 self.slots中的index即为值
-    在 self.data中的index
-    """
-
     def __init__(self):
         self.size = 11
         self.slots = [None] * self.size
@@ -18,33 +7,24 @@ class HashTable:
     def put(self, key, data):
         hashvalue = self.hashfunction(key, len(self.slots))  # 计算 hashvalue
 
-        # 如果 slots当前 hashvalue 位置上的值为None,则将新值插入
         if self.slots[hashvalue] == None:
             self.slots[hashvalue] = key
             self.data[hashvalue] = data
         else:
-            # 如果 slots 当前 hashvalue 位置上的值为key,则用新值替代旧值
             if self.slots[hashvalue] == key:
                 self.data[hashvalue] = data
-            else:  # 如果 slots 当前 hashvalue 位置上的值为其他值的话，则开始探测后面的位置
-                nextslot = self.rehash(hashvalue, len(self.slots))  # 重新 rehash，实际相当于探测 hashvalue后一个位置
-                # 如果后一个位置不为空，且不等于当前值即被其他值占用，则继续探测后一个
+            else:
+                nextslot = self.rehash(hashvalue, len(self.slots))
                 while self.slots[nextslot] != None and self.slots[nextslot] != key:
                     nextslot = self.rehash(nextslot, len(self.slots))
-
-                # 如果后一个值为空，则插入；为原来的值，则替换
-                if self.slots[nextslot] == None:
+                if not self.slots[nextslot]:
                     self.slots[nextslot] = key
                     self.data[nextslot] = data
                 else:
-                    self.data[nextslot] = data  # replace
-
-    """余数法计算 hashvalue"""
+                    self.data[nextslot] = data
 
     def hashfunction(self, key, size):
         return key % size
-
-    """使用 +1 法来重新 rehash"""
 
     def rehash(self, oldhash, size):
         return (oldhash + 1) % size
@@ -57,13 +37,13 @@ class HashTable:
         found = False
         position = startslot
 
-        while self.slots[position] != None and not found and not stop:
-            if self.slots[position] == key:  # 如果slots当前位置上的值等于 key,则找到了对应的 value
+        while self.slots[position] and not found and not stop:
+            if self.slots[position] == key:
                 found = True
                 data = self.data[position]
-            else:  # 否则的话，rehash后继续搜寻下一个可能的位置
+            else:
                 position = self.rehash(position, len(self.slots))
-            if position == startslot:  # 如果最后又回到了第一次搜寻的位置，则要找的 key不在 slots中
+            if position == startslot:
                 stop = True
         return data
 
@@ -73,5 +53,65 @@ class HashTable:
     def __setitem__(self, key, data):
         self.put(key, data)
 
+
+import time
+class mockHashMap:
+    def __init__(self):
+        self.res_dict = {}
+        self.start_time = time.time()
+        self.putCallCount = 0
+        self.putCallTrack = [] # Each Element in the list is the call times in ith 5 minutes
+        self.getCallCount = 0
+        self.getCallTrack = []
+
+    def put(self, key, val):
+        if key not in self.res_dict:
+            self.res_dict[key] = []
+            self.res_dict[key].append(val)
+        else:
+            self.res_dict[key].append(val)
+
+        if (time.time() - self.start_time)%300 == 0:
+            self.putCallTrack.append(self.putCallCount)
+            self.putCallCount = 0
+            self.putCallCount += 1
+
+    def get(self, key):
+        if (time.time()-self.start_time)//300 == 0:
+            self.getCallTrack.append(self.getCallCount)
+            self.putCallCount = 0
+            self.getCallCount += 1
+        return self.res_dict[key]
+
+    def measure_put_load(self):
+        last_5_min_call = self.putCallCount[-1]
+        return last_5_min_call/300
+
+    def measure_get_load(self):
+        last_5_min_call = self.getCallCount[-1]
+        return last_5_min_call/300
+
+    # def __init__:
+    #     self.putBuffer = [0] * 300
+    #
+    # def get(self, k):
+    #      ...
+    #
+    # current_time = time.time()
+    # diff = min(current_time - self.last_time, 300)
+    # self.last_time = current_time
+    # if diff == 0:
+    #     self.putBuffer[self.last_idx] += 1
+    # else:
+    #     for i in range(diff - 1):
+    #         idx = (self.last_idx + 1 + i) % 300
+    #         self.putBuffer[idx] = 0
+    #     idx = (self.last_idx + diff) % 300
+    #     self.putBuffer[idx] = 1
+    #     self.last_idx = idx
+    #
+    # def measure_put_load(self):
+    #     return sum(self.putBuffer) / 300
 if __name__ == '__main__':
-    k = keyset()
+    h = HashTable()
+
