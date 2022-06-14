@@ -1,315 +1,66 @@
-from collections import Counter
+# import matplotlib.pyplot as plt
+# import numpy as np
+#
+#
+# # Fixing random state for reproducibility
+# np.random.seed(19680801)
+#
+# # x = np.linspace(0, 10)
+# x = np.array([32, 64, 96, 128, 160, 192, 224, 256, 320, 352, 384, 416, 448, 480, 512, 544
+#                  , 576, 608, 640, 672, 704, 736, 768, 800, 832, 864, 896, 928, 960,
+#               992, 1024])
+# y_416 = np.array([1.13, 5.23, 8.24, 10.2, 10, 10.8, 11.2, 11.5, 11.7, 11.9, 12.1, 12.9, 11.9, 12.1, 11.7, 12.2
+#                  , 12.1, 11.9, 11.7, 12.1, 12.3, 12.1, 11.7, 12.1, 11.7, 12.3, 12.1, 11.9, 12.1,
+#               12.1, 11.7])
+# y_412 = np.array([1.14, 6.29, 12.9, 16.9, 15.8, 18.3, 20.7, 21.4, 21, 22.9, 23.6, 22.7, 23.3, 23.9, 23.8,23.6
+#                  , 23.7, 24.1, 24.1, 23.6, 23.9, 24.2, 24.1, 23.9, 22.7, 24.5, 24.4, 24.3, 24.3,
+#               24.4, 22.8])
+# y_48 = np.array([1.16, 6.42, 12.7, 16.8, 15.8, 18.3, 20.1, 21, 21.7, 22.4, 22.9, 22.5, 22.7, 23.3, 23, 23
+#                  , 23.3, 23.4, 23.9, 23.3, 23.4, 23.5, 23.7, 23.2, 23.5, 23.9, 23.9, 23.6, 23.8,
+#               24.1, 23.8])
+# y_naive = np.array([2.5645, 2.16, 1.9, 1.7, 1.89, 1.67, 1.78, 1.93, 1.87, 1.64, 1.76, 1.74, 1.58, 1.76, 0.88, 1.69
+#                  , 1.75, 1.69, 1.71, 1.67, 1.56, 1.47, 1.52, 1.37, 1.27, 1.34, 1.28, 1.15, 1.17,
+#               1.19, 0.14])
+# y_blas = np.array([17.185, 24.01, 26.45, 28.62, 29.14, 30.23, 31.23, 32.445, 32.435, 32.98, 33.41, 33.67, 33.17, 33.78, 34.21, 34.56
+#                  , 34.6, 34.8, 35.1, 34.6, 35.34, 35.45, 35.67, 35.78, 35.43, 35.17, 35.5, 35.674, 34.9,
+#               35.1, 34.965])
+# with plt.style.context('Solarize_Light2'):
+#     plt.plot(x, y_416, label = "4*16 microkernel")
+#     plt.plot(x, y_412, label = "4*12 microkernel")
+#     plt.plot(x, y_48, label="4*8 microkernel")
+#     plt.plot(x, y_naive, label = "naive")
+#     plt.plot(x, y_blas, label="blas")
+#     # Number of accent colors in the color scheme
+#     plt.title('AVX256 -- Overall Performance')
+#     plt.xlabel('Matrix Size', fontsize=14)
+#     plt.ylabel('Performance(GFLOPS)', fontsize=14)
+#     plt.legend()
+#
+# plt.show()
 
-c = Counter('abcasd')
-print(sorted(c))
-#prefix product suffix product
+import matplotlib.pyplot as plt
+import numpy as np
 
-#bucket sort
 
-#reverse linklist
-def ReverseList(self, pHead):
-    if not pHead or not pHead.next:
-        return pHead
-    last = None
-    while pHead:
-        tmp = pHead.next
-        pHead.next = last
-        last = pHead
-        pHead = tmp
-    return last
+# Fixing random state for reproducibility
+np.random.seed(19680801)
 
-class Solution(object):
-    def reorderList(self, head):
-        """
-        :type head: ListNode
-        :rtype: void Do not return anything, modify head in-place instead.
-        """
-        if head and head.next and head.next.next:
-            #find mid
-            fast, slow = head, head
-            while fast.next and fast.next.next:
-                fast = fast.next.next
-                slow = slow.next
-            head1 = head
-            head2 = slow.next
-            slow.next = None
+x = np.array([128, 192, 256, 384])
+# y_824 = np.array([0.82, 8.17, 19.2, 32.1, 33.3, 35.3, 31.7, 41.2, 43.4, 40, 42, 37.3, 40.3, 44.3, 38.5, 39.7, 39.3])
+# y_816 = np.array([1.21, 8.17, 18.7, 30, 30.2, 32.5, 34.7, 33.8, 36.7, 35.7, 34.8, 35.4, 36.2, 34.6, 40.5, 34.4, 34.2])
+# y_88 = np.array([1.07, 7.96, 19.7, 34.7, 33.7, 37.5, 40.3, 37.2, 40.8, 41.9, 41.9, 41.3, 42.4, 36.2, 41.4, 41.8, 42.2])
+y_n1 = np.array([1084, 1585, 2176, 3079])
+y_n2 = np.array([142.5, 303.1, 536.8, 1606])
+with plt.style.context('Solarize_Light2'):
+    # plt.plot(x, y_824, label ="8*24 microkernel")
+    # plt.plot(x, y_816, label ="8*16 microkernel")
+    # plt.plot(x, y_88, label="8*8 microkernel")
+    plt.plot(x, y_n1, label = "GFlops on N1")
+    plt.plot(x, y_n2, label="GFlops on N2")
+    # Number of accent colors in the color scheme
+    plt.title('Strong and Weak Scaling')
+    plt.xlabel('Matrix Size', fontsize=14)
+    plt.ylabel('Performance(GFLOPS)', fontsize=14)
+    plt.legend()
 
-            # reverse linked list head2
-            dummy = ListNode(0)
-            dummy.next = head2
-            p = head2.next
-            head2.next = None
-            while p:
-                temp = p
-                p = p.next
-                temp.next = dummy.next
-                dummy.next = temp
-            head2 = dummy.next
-
-            # merge two linked list head1 and head2
-            p1 = head1
-            p2 = head2
-            while p2:
-                temp1 = p1.next
-                temp2 = p2.next
-                p1.next = p2
-                p2.next = temp1
-                p1 = temp1
-                p2 = temp2
-
-# 单调栈
-
-# 左右侧边界
-
-# bst 中序是有序的
-
-import heapq # 注意是 小顶堆 噢～
-
-import copy
-h = copy.copy(origin_list)
-heapq.heapify(h)
-
-h = []
-for item in origin_list:
-    heapq.heappush(h, item)
-
-def partition(arr,low,high):
-    i = ( low-1 )         # 最小元素索引
-    pivot = arr[high]
-
-    for j in range(low , high):
-
-        # 当前元素小于或等于 pivot
-        if   arr[j] <= pivot:
-
-            i = i+1
-            arr[i],arr[j] = arr[j],arr[i]
-
-    arr[i+1], arr[high] = arr[high],arr[i+1]
-    return ( i+1 )
-
-def quickSort(arr,low,high):
-    if low < high:
-        pi = partition(arr,low,high)
-
-        quickSort(arr, low, pi-1)
-        quickSort(arr, pi+1, high)
-
-answer[i] = answer[i >> 1] + (i & 1)
-
-def findKthLargest(self, nums, k):
-    pivot = random.choice(nums)
-    nums1, nums2 = [], []
-    for num in nums:
-        if num > pivot:
-            nums1.append(num)
-        elif num < pivot:
-            nums2.append(num)
-    if k <= len(nums1):
-        return self.findKthLargest(nums1, k)
-    if k > len(nums) - len(nums2):
-        return self.findKthLargest(nums2, k - (len(nums) - len(nums2)))
-    return pivot
-
-class LRUCache:
-    def __init__(self, capacity: int):
-        self.capacity = capacity
-        self.data = []
-
-    def get(self, key: int) -> int:
-        for i, tup in enumerate(self.data):
-            if tup[0] == key:
-                values = tup
-                self.data.pop(i)
-                self.data.append(values)
-                return values[1]
-
-        return -1
-
-    def put(self, key: int, value: int) -> None:
-        did_put = False
-        for i, tup in enumerate(self.data):
-            if tup[0] == key:
-                did_put = True
-                self.data.pop(i)
-                self.data.append((key, value))
-        if not did_put:
-            self.data.append((key, value))
-        if len(self.data) > self.capacity:
-            self.data.pop(0)
-
-import random
-def func(arr):
-    n = len(arr)
-    rem = n
-    for i in range(n):
-        p = random.randint(1, rem)  # randint的随机范围是[a,b]闭区间
-        arr[p-1], arr[rem-1] = arr[rem-1], arr[p-1]
-        rem -= 1
-    return arr
-
-import re
-result = re.findall(r"\b(?:(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.){3}(?:25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\b", string_ip)
-
-def numDecodings(self, s: str) -> int:
-    dp = [0] * (len(s) + 1)
-    dp[0] = 1
-    for i in range(1, len(dp)):
-        if int(s[i-1]) != 0:
-            dp[i] = dp[i-1]
-        if i != 1 and '09' < s[i-2:i] < '27':
-            dp[i] += dp[i-2]
-    return dp[-1]
-
-class Solution:
-    def maxProduct(self, nums: List[int]) -> int:
-        if not nums: return
-        res = nums[0]
-        pre_max = nums[0]
-        pre_min = nums[0]
-        for num in nums[1:]:
-            cur_max = max(pre_max * num, pre_min * num, num)
-            cur_min = min(pre_max * num, pre_min * num, num)
-            res = max(res, cur_max)
-            pre_max = cur_max
-            pre_min = cur_min
-        return res
-
-class Solution(object):
-    def rotate(self, matrix):
-        """
-        :type matrix: List[List[int]]
-        :rtype: void Do not return anything, modify matrix in-place instead.
-        """
-        if matrix:
-            rows = len(matrix)
-            cols = len(matrix[0])
-            for i in xrange(rows / 2):
-                for j in xrange(cols):
-                    matrix[i][j], matrix[rows - i - 1][j] = matrix[rows - i - 1][j], matrix[i][j]
-            for i in xrange(rows):
-                for j in xrange(i):
-                    matrix[i][j], matrix[j][i] = matrix[j][i], matrix[i][j]
-
-import bisect
-
-a = [1,4,6,8,12,15,20]
-position = bisect.bisect(a,13)
-
-def chinesetoint(self,  strs):
-    if strs == "":
-        return None
-    dicts = {"一":1, "二":2, "三": 3, "四": 4, "五": 5, "六":6, "七":7, "八":8, "九":9, "十": 10, "百":100, "千":1000, "万":10000}
-    strs = strs.replace("零", "")
-    lists = [0] * (len(strs) + 1)
-    nums = 0
-    for i in range(len(strs)):
-        lists[i] = int(dicts.get(strs[i], -1))
-        # 首先判定除了第0个元素外，其他元素的数值是否大于10
-        if i !=0 and lists[i] >= 10:
-            if lists[i-1] < 10:
-                nums += lists[i] * lists[i-1] - lists[i-1]
-            else:
-                nums = nums * lists[i]
-        else:
-            nums += lists[i]
-
-class Solution(object):
-    def threeSum(self, nums):
-        length = len(nums)
-        resultList = []
-        nums.sort()
-        for i in range(0,length-2):
-            j = i + 1
-            k = length - 1
-            while (j < k):
-                sum0 = nums[i] + nums[j] + nums[k]
-                if (sum0 == 0):
-                    result = []
-                    result.append(nums[i])
-                    result.append(nums[j])
-                    result.append(nums[k])
-                    if result not in resultList:
-                        resultList.append(result)
-                    j +=1
-                if (sum0 < 0):
-                    j +=1
-                if (sum0 > 0):
-                    k -=1
-        return resultList
-
-    class Solution(object):
-        def wordBreak(self, s, wordDict):
-            """
-            :type s: str
-            :type wordDict: List[str]
-            :rtype: bool
-            """
-            print(s)
-            print(wordDict)
-            dp = [False] * (len(s) + 1)
-            dp[0] = True
-            print(dp)
-            for i in xrange(1, len(s) + 1):
-                for k in xrange(i):
-                    if dp[k] and s[k:i] in wordDict:
-                        dp[i] = True
-                        print(dp)
-            return dp.pop()
-
-class Solution:
-    def minWindow(self, s: str, t: str) -> str:
-        from collections import defaultdict
-
-        win = defaultdict(int)
-        t_dict = defaultdict(int)
-        for i in t:
-            t_dict[i] += 1
-
-        # 定义指针
-        left = 0
-        right = 0
-        # 初始化最小长度
-        min_len = float('inf')
-
-        # chr_count 用以表示滑动窗口包含字符数
-        chr_count = 0
-        # 最小子串起始位置
-        begin = 0
-        # s 长度
-        s_len = len(s)
-        # t 长度
-        t_len = len(t)
-
-        while right < s_len:
-            # 移动窗口，
-            if t_dict[s[right]] == 0:
-                right += 1
-                continue
-            # 滑动窗口包含 T 字符数，当超过 T 其中字符个数时不在增加
-            if win[s[right]] < t_dict[s[right]]:
-                chr_count += 1
-
-            win[s[right]]+=1
-            right+=1
-
-            # 当窗口包含 T 所有的字符时，缩小窗口
-            while chr_count == t_len:
-                # 这里更新子串的起始位置和长度
-                if right-left < min_len:
-                    begin = left
-                    min_len = right - left
-                # 缩小窗口
-                if t_dict[s[left]] == 0:
-                    left += 1
-                    continue
-                # 这里表示出窗时，窗口所包含 T 的字符刚好等于 T 中字符的个数
-                # 这个时候再移动，窗口就不满足包含 T 所有字符的条件
-                # 这里 chr_count - 1 ，循环结束
-                if win[s[left]] == t_dict[s[left]]:
-                    chr_count -= 1
-
-                win[s[left]]-=1
-                left += 1
-
-        return "" if min_len == float('inf') else s[begin:begin+min_len]
+plt.show()
