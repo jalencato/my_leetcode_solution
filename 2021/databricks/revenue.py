@@ -2,6 +2,52 @@ from collections import defaultdict
 from sortedcontainers import SortedList, SortedDict
 import heapq
 
+class Revenue_sorted:
+    def __init__(self):
+        self.maxcnt = 0
+        self.idToRevenue = defaultdict(int)
+        self.revenueToId = SortedDict()
+
+    def insert(self, revenue):
+        self.idToRevenue[self.maxcnt] = revenue
+        if revenue not in self.revenueToId:
+            self.revenueToId[revenue] = set()
+        self.revenueToId[revenue].add(self.maxcnt)
+        self.maxcnt += 1
+        return self.maxcnt - 1
+
+    def insert_refer(self, revenue, referID):
+        self.idToRevenue[self.maxcnt] = revenue
+        if revenue not in self.revenueToId:
+            self.revenueToId[revenue] = set()
+        self.revenueToId[revenue].add(self.maxcnt)
+
+        originalValue = self.idToRevenue[referID]
+        if originalValue + revenue not in self.revenueToId:
+            self.revenueToId[originalValue + revenue] = set()
+        self.revenueToId[originalValue + revenue].add(referID)
+
+        self.revenueToId[originalValue].remove(referID)
+        if not self.revenueToId[originalValue]:
+            del self.revenueToId[originalValue]
+        self.idToRevenue[referID] = originalValue + revenue
+        self.maxcnt += 1
+
+        return self.maxcnt - 1
+
+    def getKLowestSorted(self, k, targetRevenue):
+        cnt, res = 0, []
+        for key, value in self.revenueToId.items():
+            if not value:
+                continue
+            if key < targetRevenue:
+                continue
+            for v in value:
+                cnt += 1
+                res.append(v)
+                if cnt >= k:
+                    return res
+        return res
 
 class Revenue:
     def __init__(self):
@@ -102,15 +148,15 @@ class Revenue:
 
 
 if __name__ == '__main__':
-    r = Revenue()
+    r = Revenue_sorted()
     print(r.insert(10))
     print(r.insert_refer(20, 0))
     print(r.insert_refer(40, 1))
-    # print(r.insert_refer(15, 1))
+    print(r.insert_refer(15, 1))
     print("----------------------------")
     # r.insert_refer(2, 0)
-    print(r.getLowestKByTotalRevenue(2, 35))
+    # print(r.getLowestKByTotalRevenue(2, 35))
     print(r.getKLowestSorted(3, 35))
     # print(r.get_nested_revenue(0, 2))
     print("----------------------------")
-    print(r.getNestedRevenue(0, 2))
+    # print(r.getNestedRevenue(0, 2))
