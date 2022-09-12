@@ -1,4 +1,5 @@
 from collections import defaultdict
+from sortedcontainers import SortedList, SortedDict
 import heapq
 
 
@@ -6,7 +7,19 @@ class Revenue:
     def __init__(self):
         self.maxcnt = 0
         self.idToRevenue = defaultdict(int)
-        self.revenueToId = defaultdict(list)
+        self.revenueToId = defaultdict(list) # sortedDict version
+        # self.revenueToId = SortedDict()
+        # def _remove_revenue(self, revenue, id_):
+        #       self.revenue_to_ids[revenue].remove(id_)
+        #
+        #   if not self.revenue_to_ids[revenue]:
+        #         del self.revenue_to_ids[revenue]
+        # def _add_new_revenue(self, revenue, id_):
+        #       if revenue not in self.revenue_to_ids:
+        #             self.revenue_to_ids[revenue] = set()
+        #
+        #   self.revenue_to_ids[revenue].add(id_)
+
         self.idrefer = defaultdict(list) # used for the last extra question
 
     def insert(self, revenue):
