@@ -2,6 +2,7 @@ from collections import defaultdict
 from sortedcontainers import SortedList, SortedDict
 import heapq
 
+
 class Revenue_sorted:
     def __init__(self):
         self.maxcnt = 0
@@ -48,6 +49,7 @@ class Revenue_sorted:
                 if cnt >= k:
                     return res
         return res
+
 
 class Revenue:
     def __init__(self):

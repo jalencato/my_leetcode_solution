@@ -1,5 +1,7 @@
-import bisect
+from collections import Counter
 
-a:dict = None
-# a.clear()
-print(a.items())
+stack = [1, 2, 3, 4]
+# stack = stack[:-3]
+c = Counter(stack)
+print(c.__len__())
+print(stack)
