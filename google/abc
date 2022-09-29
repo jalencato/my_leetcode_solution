@@ -1,0 +1,6 @@
+def helper(input):
+    str_list, value = [], []
+
+    return 1
+
+print(helper(['a', 'b', 'c', 2]))
