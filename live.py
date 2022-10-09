@@ -1,10 +1,6 @@
-def hashFunction(s):
-	hash = 0
-	for i in range(len(s)):
-		hash += (i + 1) * (ord(s[i]) - ord('a') + 1)
-	return hash
+from collections import defaultdict
 
-print(hashFunction("xwxx") == hashFunction("vztz"))
-print(hashFunction("uwvy") == hashFunction("gvzz"))
-print(hashFunction("tttt") == hashFunction("zszt"))
-print(hashFunction("bvvv") == hashFunction("xxxw"))
+a = [[2], [2], [3], [4]]
+b = [a[0] + a[1], a[2] + a[3]]
+a.remove([2])
+print(a)
