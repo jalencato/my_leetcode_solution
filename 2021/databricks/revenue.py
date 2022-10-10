@@ -8,6 +8,7 @@ class Revenue_sorted:
         self.maxcnt = 0
         self.idToRevenue = defaultdict(int)
         self.revenueToId = SortedDict()
+        self.idrefer = defaultdict(list)  # used for the last extra question
 
     def insert(self, revenue):
         self.idToRevenue[self.maxcnt] = revenue
@@ -22,6 +23,8 @@ class Revenue_sorted:
         if revenue not in self.revenueToId:
             self.revenueToId[revenue] = set()
         self.revenueToId[revenue].add(self.maxcnt)
+
+        self.idrefer[referID].append(self.maxcnt)  # used for the last extra question
 
         originalValue = self.idToRevenue[referID]
         if originalValue + revenue not in self.revenueToId:
@@ -50,6 +53,21 @@ class Revenue_sorted:
                     return res
         return res
 
+
+    def getNestedRevenue(self, id, max_nesting):
+        q = [[0, self.idToRevenue[id], self.idrefer[id]]]
+        max_profit = -1
+
+        while q:
+            step, profit, candidates = q.pop(0)
+            if step == max_nesting:
+                max_profit = max(profit, max_profit)
+                continue
+            if len(candidates) == 0:
+                max_profit = max(profit, max_profit)
+            for c in candidates:
+                q.append([step + 1, profit + self.idToRevenue[c], self.idrefer[c]])
+        return max_profit
 
 class Revenue:
     def __init__(self):

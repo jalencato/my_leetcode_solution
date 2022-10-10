@@ -1,6 +1,5 @@
 class Solution:
     def ipToCIDR(self, ip, n):
-
         num = self.ip2num(ip)
         end = num + n - 1
         cover = 0
@@ -16,7 +15,6 @@ class Solution:
         return ans
 
     def zero_count(self, num):
-
         if num == 0:
             return 32
         ans = 0

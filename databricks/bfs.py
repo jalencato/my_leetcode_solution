@@ -43,6 +43,9 @@ def findOptimalPath(graph, time, cost, start, end):
             if graph[x][y] == "D":
                 q.append((nxt, step_cur + time[pattern - 1], cost_cur + cost[pattern - 1], visited.union({nxt}), pattern))
                 continue
+            # if nxt in minStep and minStep[nxt] < step_cur + time[pattern - 1]:
+            #     continue
+            # minStep[cur] = step_cur + time[p
             q.append((nxt, step_cur + time[pattern - 1], cost_cur + cost[pattern - 1], visited.union({nxt}), pattern))
     return final_pattern
 

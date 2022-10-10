@@ -21,7 +21,7 @@ class KeyValueStore(object):
         idx = 0
         for i in range(dif - 1):
             idx = (self.last_idx_put + i + 1) % 300
-        self.ring_buffer_put[idx] = 0
+            self.ring_buffer_put[idx] = 0
 
         idx = (self.last_idx_put + dif) % 300
         self.ring_buffer_put[idx] += 1
@@ -37,7 +37,7 @@ class KeyValueStore(object):
 
         for i in range(dif - 1):
             idx = (self.last_idx_get + i + 1) % 300
-        self.ring_buffer_get[idx] = 0
+            self.ring_buffer_get[idx] = 0
 
         idx = (self.last_idx_get + dif) % 300
         self.ring_buffer_get[idx] += 1
