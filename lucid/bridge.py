@@ -1,7 +1,7 @@
 from collections import defaultdict
 
 initialCountdown = 5
-colorMap, countMap = defaultdict(str), defaultdict(int)
+countMap = defaultdict(int)
 
 
 def is_valid(point, board):
