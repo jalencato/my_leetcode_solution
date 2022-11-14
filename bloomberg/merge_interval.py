@@ -19,6 +19,7 @@ class time:
             return True
         return False
 
+
 def stringParser(timelist):
     for index, slot in enumerate(timelist):
         start, end = slot[0], slot[1]
@@ -30,6 +31,7 @@ def stringParser(timelist):
         startTime, endTime = time(start[0], start[1], start[2]), time(end[0], end[1], end[2])
         timelist[index] = [startTime, endTime]
     return timelist
+
 
 def mergeInterval(timelist):
     res = []
